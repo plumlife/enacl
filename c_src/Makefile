@@ -34,7 +34,7 @@ CXX ?= arm-linux-gnueabi-cpp
 CFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR) -I /opt/arm/include
 CXXFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
 
-LDLIBS += -L $(ERL_INTERFACE_LIB_DIR) -lerl_interface -lei -lsodium
+LDLIBS += -L $(ERL_INTERFACE_LIB_DIR) -L /opt/arm/lib -lerl_interface -lei -lsodium
 LDFLAGS += -shared
 
 # Verbosity.
