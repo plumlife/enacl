@@ -18,15 +18,18 @@ ifeq ($(UNAME_SYS), Darwin)
 	CXXFLAGS ?= -O3 -arch x86_64 -finline-functions -Wall
 	LDFLAGS ?= -arch x86_64 -flat_namespace -undefined suppress
 else ifeq ($(UNAME_SYS), FreeBSD)
-	CC ?= arm-linux-gnueabi-gcc
+	CC ?= cc
 	CFLAGS ?= -O3 -std=c99 -finline-functions -Wall -Wmissing-prototypes -I /usr/local/include
 	CXXFLAGS ?= -O3 -finline-functions -Wall
 	LDFLAGS ?= -fPIC -L /usr/local/lib
 else ifeq ($(UNAME_SYS), Linux)
-	CC ?= arm-linux-gnueabi-gcc
+	CC ?= gcc
 	CFLAGS ?= -O3 -std=c99 -finline-functions -Wall -Wmissing-prototypes
 	CXXFLAGS ?= -O3 -finline-functions -Wall
 endif
+
+CC ?= arm-linux-gnueabi-gcc
+CXX ?= arm-linux-gnueabi-cpp
 
 CFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR) -I /opt/arm/include
 CXXFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
