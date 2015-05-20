@@ -1,5 +1,7 @@
 # Based on c_src.mk from erlang.mk by LoÃƒÂ¯c Hoguin <essen@ninenines.eu>
 
+export PATH := /root/x-tools/arm-plum-linux-gnueabi/bin:$(PATH)
+
 PROJECT ?= enacl_nif
 
 ERTS_INCLUDE_DIR ?= /opt/arm/lib/erlang/erts-6.4/include
@@ -28,8 +30,8 @@ else ifeq ($(UNAME_SYS), Linux)
 	CXXFLAGS ?= -O3 -finline-functions -Wall
 endif
 
-CC ?= arm-linux-gnueabi-gcc
-CXX ?= arm-linux-gnueabi-cpp
+CC ?= arm-plum-linux-gnueabi-gcc
+CXX ?= arm-plum-linux-gnueabi-cpp
 
 CFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR) -I /opt/arm/include
 CXXFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
@@ -51,11 +53,11 @@ link_verbose = $(link_verbose_$(V))
 SOURCES := $(shell find $(C_SRC_DIR) -type f \( -name "*.c" -o -name "*.C" -o -name "*.cc" -o -name "*.cpp" \))
 OBJECTS = $(addsuffix .o, $(basename $(SOURCES)))
 
-COMPILE_C = $(c_verbose) arm-linux-gnueabi-gcc $(CFLAGS) $(CPPFLAGS) -c
-COMPILE_CPP = $(cpp_verbose) arm-linux-gnueabi-cpp $(CXXFLAGS) $(CPPFLAGS) -c
+COMPILE_C = $(c_verbose) arm-plum-linux-gnueabi-gcc $(CFLAGS) $(CPPFLAGS) -c
+COMPILE_CPP = $(cpp_verbose) arm-plum-linux-gnueabi-cpp $(CXXFLAGS) $(CPPFLAGS) -c
 
 $(C_SRC_OUTPUT): $(OBJECTS)
-	$(link_verbose) arm-linux-gnueabi-gcc $(OBJECTS) $(LDFLAGS) $(LDLIBS) -o $(C_SRC_OUTPUT)
+	$(link_verbose) arm-plum-linux-gnueabi-gcc $(OBJECTS) $(LDFLAGS) $(LDLIBS) -o $(C_SRC_OUTPUT)
 
 %.o: %.c
 	$(COMPILE_C) $(OUTPUT_OPTION) $<
