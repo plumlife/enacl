@@ -1,10 +1,12 @@
 # Based on c_src.mk from erlang.mk by LoÃƒÂ¯c Hoguin <essen@ninenines.eu>
 
+export PATH := /root/x-tools/arm-plum-linux-gnueabi/bin:$(PATH)
+
 PROJECT ?= enacl_nif
 
-ERTS_INCLUDE_DIR ?= $(shell erl -noshell -s init stop -eval "io:format(\"~s/erts-~s/include/\", [code:root_dir(), erlang:system_info(version)]).")
-ERL_INTERFACE_INCLUDE_DIR ?= $(shell erl -noshell -s init stop -eval "io:format(\"~s\", [code:lib_dir(erl_interface, include)]).")
-ERL_INTERFACE_LIB_DIR ?= $(shell erl -noshell -s init stop -eval "io:format(\"~s\", [code:lib_dir(erl_interface, lib)]).")
+ERTS_INCLUDE_DIR ?= /opt/arm/lib/erlang/erts-6.4/include
+ERL_INTERFACE_INCLUDE_DIR ?= /opt/arm/lib/erlang/lib/erl_interface-3.7.20/include
+ERL_INTERFACE_LIB_DIR ?= /opt/arm/lib/erlang/lib/erl_interface-3.7.20/lib
 
 C_SRC_DIR = $(CURDIR)
 C_SRC_OUTPUT ?= $(CURDIR)/../priv/$(PROJECT).so
@@ -28,10 +30,13 @@ else ifeq ($(UNAME_SYS), Linux)
 	CXXFLAGS ?= -O3 -finline-functions -Wall
 endif
 
-CFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
+CC ?= arm-plum-linux-gnueabi-gcc
+CXX ?= arm-plum-linux-gnueabi-cpp
+
+CFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR) -I /opt/arm/include
 CXXFLAGS += -fPIC -I $(ERTS_INCLUDE_DIR) -I $(ERL_INTERFACE_INCLUDE_DIR)
 
-LDLIBS += -L $(ERL_INTERFACE_LIB_DIR) -lerl_interface -lei -lsodium
+LDLIBS += -L $(ERL_INTERFACE_LIB_DIR) -L /opt/arm/lib -lerl_interface -lei -lsodium
 LDFLAGS += -shared
 
 # Verbosity.
@@ -48,11 +53,11 @@ link_verbose = $(link_verbose_$(V))
 SOURCES := $(shell find $(C_SRC_DIR) -type f \( -name "*.c" -o -name "*.C" -o -name "*.cc" -o -name "*.cpp" \))
 OBJECTS = $(addsuffix .o, $(basename $(SOURCES)))
 
-COMPILE_C = $(c_verbose) $(CC) $(CFLAGS) $(CPPFLAGS) -c
-COMPILE_CPP = $(cpp_verbose) $(CXX) $(CXXFLAGS) $(CPPFLAGS) -c
+COMPILE_C = $(c_verbose) arm-plum-linux-gnueabi-gcc $(CFLAGS) $(CPPFLAGS) -c
+COMPILE_CPP = $(cpp_verbose) arm-plum-linux-gnueabi-cpp $(CXXFLAGS) $(CPPFLAGS) -c
 
 $(C_SRC_OUTPUT): $(OBJECTS)
-	$(link_verbose) $(CC) $(OBJECTS) $(LDFLAGS) $(LDLIBS) -o $(C_SRC_OUTPUT)
+	$(link_verbose) arm-plum-linux-gnueabi-gcc $(OBJECTS) $(LDFLAGS) $(LDLIBS) -o $(C_SRC_OUTPUT)
 
 %.o: %.c
 	$(COMPILE_C) $(OUTPUT_OPTION) $<
