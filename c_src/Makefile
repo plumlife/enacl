@@ -4,7 +4,7 @@ export PATH := /root/x-tools/arm-plum-linux-gnueabi/bin:$(PATH)
 
 PROJECT ?= enacl_nif
 
-ERTS_INCLUDE_DIR ?= /opt/arm/lib/erlang/erts-6.4/include
+ERTS_INCLUDE_DIR ?= /opt/arm/lib/erlang/erts-6.4.1.2/include
 ERL_INTERFACE_INCLUDE_DIR ?= /opt/arm/lib/erlang/lib/erl_interface-3.7.20/include
 ERL_INTERFACE_LIB_DIR ?= /opt/arm/lib/erlang/lib/erl_interface-3.7.20/lib
 
